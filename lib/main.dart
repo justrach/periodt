@@ -1,19 +1,29 @@
+import 'dart:convert';
+
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:periodt/signupPage.dart';
-
+import 'package:json_theme/json_theme.dart';
 import 'home_page.dart';
 import 'loginpage.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+  final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
+  final themeJson = jsonDecode(themeStr);
+  final theme = ThemeDecoder.decodeThemeData(themeJson)!;
   final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   await Hive.openBox<String>("tokenBox");
 
-  runApp(ProviderScope(child: MyApp()));
+  runApp(ProviderScope(child: MyApp(theme: theme,)));
 }
 final tokenProvider = FutureProvider<String?>((ref) async {
   final tokenBox = await Hive.openBox<String>('tokenBox');
@@ -22,19 +32,52 @@ final tokenProvider = FutureProvider<String?>((ref) async {
 });
 
 class MyApp extends ConsumerWidget {
+  const MyApp({Key? key, required this.theme}) : super(key: key);
+  final ThemeData theme;
   @override
   Widget build(BuildContext context,WidgetRef ref) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: ref.watch(tokenProvider).when(
+      theme: theme,
+      home:
+      AnimatedSplashScreen(
+      duration: 2000,
+      splash: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+
+          // Image.asset(
+          //   "assets/images/logo.png",
+          //   height: 200,
+          //   width: 200,
+          // ),
+          LoadingAnimationWidget.waveDots(
+            size: 30,
+            color: Colors.pink,
+          ),
+          const Text(
+            "perIodt",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 40,
+                fontWeight: FontWeight.bold),
+          ),
+
+
+        ],
+      ) ,
+
+    nextScreen: ref.watch(tokenProvider).when(
         data: (token) {
           print(token);
           return token != null ? HomePage() : LoginPage();
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => LoginPage(),
-      ),
+      ), splashTransition: SplashTransition.fadeTransition,
+          pageTransitionType: PageTransitionType.topToBottom,
+          backgroundColor: const Color(0xffFFDAD8)),
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case "/home":

@@ -106,6 +106,7 @@ class LoginPage extends ConsumerWidget {
                 },
                 child: Text("Log in"),
               ),
+          SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, "/signup");
