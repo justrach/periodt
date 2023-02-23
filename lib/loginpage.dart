@@ -57,7 +57,8 @@ class LoginPage extends ConsumerWidget {
     final _passwordController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      backgroundColor:  const Color(0xffFFDAD8),
+      appBar: AppBar(title: Text("Login"), backgroundColor: Color(0xffFAFAFA),),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(

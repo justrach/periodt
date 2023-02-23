@@ -10,8 +10,10 @@ import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:periodt/signupPage.dart';
 import 'package:json_theme/json_theme.dart';
+import 'components/widgets/listViewNew.dart';
 import 'home_page.dart';
 import 'loginpage.dart';
+import 'newpage.dart';
 
 void main() async {
 
@@ -84,6 +86,10 @@ class MyApp extends ConsumerWidget {
             return MaterialPageRoute(builder: (_) => HomePage());
           case "/signup":
             return MaterialPageRoute(builder: (_) => SignUpPage());
+          case "/animated":
+            return MaterialPageRoute(builder: (_) => AnimatedContainerExample());
+          case "/example":
+            return MaterialPageRoute(builder: (_) => const ExampleScreen());
           default:
             return null;
         }
