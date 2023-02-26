@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:periodt/signupPage.dart';
 import 'package:json_theme/json_theme.dart';
 import 'components/widgets/listViewNew.dart';
-import 'home_page.dart';
+import 'ui/homepage/home_page.dart';
 import 'loginpage.dart';
 import 'newpage.dart';
 
@@ -49,11 +49,6 @@ class MyApp extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
 
-          // Image.asset(
-          //   "assets/images/logo.png",
-          //   height: 200,
-          //   width: 200,
-          // ),
           LoadingAnimationWidget.waveDots(
             size: 30,
             color: Colors.pink,
