@@ -29,30 +29,26 @@ class ChartScreen extends ConsumerWidget {
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                  text: 'Crimson tides setting in\n',
-                  style:GoogleFonts.poppins(
-                    fontSize: 9,
-                    color: Color(0xffA46158),
-                    fontWeight: FontWeight.normal,
-                  )
-                ),
+                    text: 'Crimson tides setting in\n',
+                    style: GoogleFonts.poppins(
+                      fontSize: 9,
+                      color: Color(0xffe59595),
+                      fontWeight: FontWeight.normal,
+                    )),
                 TextSpan(
                     text: '7 days',
-                    style:GoogleFonts.poppins(
+                    style: GoogleFonts.poppins(
                       fontSize: 14,
-                      color: Color(0xffA46158),
+                      color: Color(0xffe59595),
                       fontWeight: FontWeight.w500,
-                    )
-                ),
+                    )),
               ],
             ),
           ),
-
         ),
         AspectRatio(
           aspectRatio: 1,
           child: PieChart(
-
             PieChartData(
               sections: [
                 PieChartSectionData(

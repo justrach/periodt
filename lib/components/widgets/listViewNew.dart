@@ -70,7 +70,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
           return paintTransform;
         case TransformableListItemPosition.bottomEdge:
           fractionalOffset =
-          isEven ? FractionalOffset.topLeft : FractionalOffset.topRight;
+              isEven ? FractionalOffset.topLeft : FractionalOffset.topRight;
           rotateDirection = isEven ? 1 : -1;
           break;
       }
@@ -183,9 +183,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
   }
 }
 
-
-
-
 class MyApp extends ConsumerWidget {
   Matrix4 getScaleDownMatrix(TransformableListItem item) {
     /// final scale of child when the animation is completed
@@ -243,7 +240,7 @@ class MyApp extends ConsumerWidget {
           return paintTransform;
         case TransformableListItemPosition.bottomEdge:
           fractionalOffset =
-          isEven ? FractionalOffset.topLeft : FractionalOffset.topRight;
+              isEven ? FractionalOffset.topLeft : FractionalOffset.topRight;
           rotateDirection = isEven ? 1 : -1;
           break;
       }
@@ -328,7 +325,7 @@ class MyApp extends ConsumerWidget {
                 // onChange: (context, value) =>{
                 //   // Do something when matrix selection changes
                 // },
-                onChange: (context, value, value2){},
+                onChange: (context, value, value2) {},
                 child: IndexedStack(
                   index: transformMatrices.keys.toList().indexOf(currentMatrix),
                   children: [
@@ -345,7 +342,9 @@ class MyApp extends ConsumerWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: index.isEven ? Colors.pinkAccent : Colors.pink,
+                              color: index.isEven
+                                  ? Colors.pinkAccent
+                                  : Colors.pink,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             alignment: Alignment.center,

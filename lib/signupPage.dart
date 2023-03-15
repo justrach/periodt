@@ -5,14 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
-final signUpProvider = ChangeNotifierProvider<SignUpProvider>((ref) => SignUpProvider());
+final signUpProvider =
+    ChangeNotifierProvider<SignUpProvider>((ref) => SignUpProvider());
 
 class SignUpProvider extends ChangeNotifier {
   String? token;
 
-  Future<bool> signUp(String email, String password, String firstName, String lastName) async {
+  Future<bool> signUp(
+      String email, String password, String firstName, String lastName) async {
     final response = await http.post(
-      Uri.parse("http://localhost:3000/signup"),
+      Uri.parse("http://10.0.0.52:3000/signup"),
       headers: <String, String>{"Content-Type": "application/json"},
       body: jsonEncode(<String, String>{
         "email": email,
@@ -32,11 +34,11 @@ class SignUpProvider extends ChangeNotifier {
   }
 }
 
-class ReadHiveBox extends StateNotifier{
+class ReadHiveBox extends StateNotifier<dynamic> {
   ReadHiveBox() : super(null);
 
   void readHiveBox() async {
-    final box = await Hive.openBox('tokenBox');
+    final box = await Hive.openBox<dynamic>('tokenBox');
     final token = box.get('token');
     print(token);
   }
@@ -45,23 +47,23 @@ class ReadHiveBox extends StateNotifier{
 class SignUpPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _formKey = GlobalKey<FormState>();
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
-    final _firstNameController = TextEditingController();
-    final _lastNameController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final firstNameController = TextEditingController();
+    final lastNameController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(title: Text("Sign Up")),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                controller: _emailController,
+                controller: emailController,
                 decoration: InputDecoration(labelText: "Email"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -71,7 +73,7 @@ class SignUpPage extends ConsumerWidget {
                 },
               ),
               TextFormField(
-                controller: _passwordController,
+                controller: passwordController,
                 decoration: InputDecoration(labelText: "Password"),
                 obscureText: true,
                 validator: (value) {
@@ -82,7 +84,7 @@ class SignUpPage extends ConsumerWidget {
                 },
               ),
               TextFormField(
-                controller: _firstNameController,
+                controller: firstNameController,
                 decoration: InputDecoration(labelText: "First Name"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -92,7 +94,7 @@ class SignUpPage extends ConsumerWidget {
                 },
               ),
               TextFormField(
-                controller: _lastNameController,
+                controller: lastNameController,
                 decoration: InputDecoration(labelText: "Last Name"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -104,17 +106,20 @@ class SignUpPage extends ConsumerWidget {
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    final email = _emailController.text;
-                    final password = _passwordController.text;
-                    final firstName = _firstNameController.text;
-                    final lastName = _lastNameController.text;
-                    final success = await ref.read(signUpProvider).signUp(email, password, firstName, lastName);
+                  if (formKey.currentState!.validate()) {
+                    final email = emailController.text;
+                    final password = passwordController.text;
+                    final firstName = firstNameController.text;
+                    final lastName = lastNameController.text;
+                    final success = await ref
+                        .read(signUpProvider)
+                        .signUp(email, password, firstName, lastName);
                     if (success) {
                       Navigator.pushReplacementNamed(context, "/home");
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Could not sign up. Please try again later."),
+                        content:
+                            Text("Could not sign up. Please try again later."),
                         duration: Duration(seconds: 2),
                       ));
                     }

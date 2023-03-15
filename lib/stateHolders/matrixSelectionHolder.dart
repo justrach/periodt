@@ -9,6 +9,6 @@ class MatrixSelectionState extends StateNotifier<String> {
 }
 
 final matrixSelectionProvider =
-StateNotifierProvider<MatrixSelectionState, String>((ref) {
+    StateNotifierProvider<MatrixSelectionState, String>((ref) {
   return MatrixSelectionState();
 });

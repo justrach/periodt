@@ -394,8 +394,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // //   return TodosNotifier();
 // // });
 
-
-
 class CountdownTimer extends StateNotifier<Duration> {
   final int seconds;
   late Timer _timer;
@@ -416,9 +414,9 @@ class CountdownTimer extends StateNotifier<Duration> {
   }
 }
 
-final countdownTimerProvider = StateNotifierProvider.autoDispose<CountdownTimer, Duration>(
-        (ref) => CountdownTimer(60)..start()
-);
+final countdownTimerProvider =
+    StateNotifierProvider.autoDispose<CountdownTimer, Duration>(
+        (ref) => CountdownTimer(60)..start());
 
 class CountdownTimerWidget extends ConsumerWidget {
   @override

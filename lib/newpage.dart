@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:animations/animations.dart';
 
 // final colorProvider = StateProvider<Color>((ref) => Colors.blue);
-final colorProvider = ChangeNotifierProvider<ColorProvider>((ref) => ColorProvider());
+final colorProvider =
+    ChangeNotifierProvider<ColorProvider>((ref) => ColorProvider());
 
 // class ColorNotifier extends StateNotifier<Color> {
 //   ColorNotifier() : super(Colors.red);
@@ -29,7 +30,6 @@ final colorProvider = ChangeNotifierProvider<ColorProvider>((ref) => ColorProvid
 //   }
 // }
 
-
 class ColorProvider extends ChangeNotifier {
   Color _color = Colors.red;
 
@@ -50,33 +50,34 @@ class ColorProvider extends ChangeNotifier {
     );
   }
 }
+
 class AnimatedContainerExample extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorProviderRef = ref.watch(colorProvider);
-    print("starting this page");
+    print('starting this page');
 
     return Scaffold(
       backgroundColor: Colors.white24,
       appBar: AppBar(
-        title: Text('AnimatedContainer Example'),
+        title: const Text('AnimatedContainer Example'),
       ),
       body: Center(
         child: OpenContainer(
           closedColor: colorProviderRef.color,
           openColor: colorProviderRef.getRandomColor(),
           transitionDuration: const Duration(milliseconds: 500),
-          closedBuilder: (BuildContext _, VoidCallback openContainer) {
+          closedBuilder: (_, openContainer) {
             return InkWell(
               onTap: openContainer,
               child: Container(
-                child: Center(child: Text("start")),
+                child: const Center(child: Text('start')),
                 width: 200,
                 height: 200,
               ),
             );
           },
-          openBuilder: (BuildContext _, VoidCallback closeContainer) {
+          openBuilder: (_, closeContainer) {
             return InkWell(
               onTap: closeContainer,
               child: Container(
@@ -91,7 +92,7 @@ class AnimatedContainerExample extends ConsumerWidget {
         onPressed: () {
           colorProviderRef.setColor(colorProviderRef.getRandomColor());
         },
-        child: Icon(Icons.color_lens),
+        child: const Icon(Icons.color_lens),
       ),
     );
   }
@@ -104,13 +105,13 @@ class SecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second Page'),
+        title: const Text('Second Page'),
       ),
       body: GestureDetector(
         onTap: () {
           Navigator.of(context).pop();
         },
-        child: Center(
+        child: const Center(
           child: Text('This is the second page.'),
         ),
       ),
