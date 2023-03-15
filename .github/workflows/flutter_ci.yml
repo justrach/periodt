@@ -13,22 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v1
-        with:
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1
+      with:
           flutter-version: '3.7.5'
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          .pub-cache
+          .dart_tool
+          **/android/.gradle
+          **/ios/Pods
+          **/build
+        key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-flutter-
 
-      - name: Get dependencies
-        run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
 
-      - name: Run tests
-        run: flutter test
+    - name: Run tests
+      run: flutter test
 
-      - name: Analyze code
-        run: flutter analyze
+    - name: Analyze code
+      run: flutter analyze
 
-      - name: Build APK
-        run: flutter build apk
+    - name: Build app
+      run: flutter build apk
