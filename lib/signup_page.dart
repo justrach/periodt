@@ -14,13 +14,13 @@ class SignUpProvider extends ChangeNotifier {
   Future<bool> signUp(
       String email, String password, String firstName, String lastName) async {
     final response = await http.post(
-      Uri.parse("http://10.0.0.52:3000/signup"),
-      headers: <String, String>{"Content-Type": "application/json"},
+      Uri.parse('http://10.0.0.52:3000/signup'),
+      headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
-        "email": email,
-        "password": password,
-        "firstName": firstName,
-        "lastName": lastName,
+        'email': email,
+        'password': password,
+        'firstName': firstName,
+        'lastName': lastName,
       }),
     );
 
@@ -54,9 +54,9 @@ class SignUpPage extends ConsumerWidget {
     final lastNameController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Sign Up")),
+      appBar: AppBar(title: const Text('Sign Up')),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: formKey,
           child: Column(
@@ -64,46 +64,46 @@ class SignUpPage extends ConsumerWidget {
             children: [
               TextFormField(
                 controller: emailController,
-                decoration: InputDecoration(labelText: "Email"),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter your email";
+                    return 'Please enter your email';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: passwordController,
-                decoration: InputDecoration(labelText: "Password"),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter your password";
+                    return 'Please enter your password';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: firstNameController,
-                decoration: InputDecoration(labelText: "First Name"),
+                decoration: const InputDecoration(labelText: 'First Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter your first name";
+                    return 'Please enter your first name';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: lastNameController,
-                decoration: InputDecoration(labelText: "Last Name"),
+                decoration: const InputDecoration(labelText: 'Last Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter your last name";
+                    return 'Please enter your last name';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
@@ -115,17 +115,17 @@ class SignUpPage extends ConsumerWidget {
                         .read(signUpProvider)
                         .signUp(email, password, firstName, lastName);
                     if (success) {
-                      Navigator.pushReplacementNamed(context, "/home");
+                      Navigator.pushReplacementNamed(context, '/home');
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content:
-                            Text("Could not sign up. Please try again later."),
+                            Text('Could not sign up. Please try again later.'),
                         duration: Duration(seconds: 2),
                       ));
                     }
                   }
                 },
-                child: Text("Sign Up"),
+                child: const Text('Sign Up'),
               ),
             ],
           ),

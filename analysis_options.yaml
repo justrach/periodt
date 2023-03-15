@@ -3,6 +3,9 @@ include: package:lints/recommended.yaml
 analyzer:
   exclude:
     - "**/*.g.dart"
+    - 'lib/stateHolders/matrixSelectionHolder.dart'
+    - 'lib/token/tokenmodel.dart'
+    - 'lib/components/widgets/list_view_new.dart'
   errors:
     invalid_assignment: error
 linter:

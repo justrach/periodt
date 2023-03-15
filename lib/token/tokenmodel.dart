@@ -1,3 +1,5 @@
+// ignore_for_file: *
+
 import 'dart:convert';
 import 'dart:developer';
 

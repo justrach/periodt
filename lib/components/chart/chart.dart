@@ -1,7 +1,9 @@
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore_for_file: *
 
 final periodDaysProvider = StateProvider<int>((ref) => 5);
 final ovulationDaysProvider = StateProvider<int>((ref) => 3);
@@ -32,14 +34,14 @@ class ChartScreen extends ConsumerWidget {
                     text: 'Crimson tides setting in\n',
                     style: GoogleFonts.poppins(
                       fontSize: 9,
-                      color: Color(0xffe59595),
+                      color: const Color(0xffe59595),
                       fontWeight: FontWeight.normal,
                     )),
                 TextSpan(
                     text: '7 days',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
-                      color: Color(0xffe59595),
+                      color: const Color(0xffe59595),
                       fontWeight: FontWeight.w500,
                     )),
               ],
@@ -60,13 +62,13 @@ class ChartScreen extends ConsumerWidget {
                 PieChartSectionData(
                   radius: 25,
                   value: ovulationPercentage,
-                  color: Color(0xffFFDEAB),
+                  color: const Color(0xffFFDEAB),
                   title: '${ovulationPercentage.toStringAsFixed(1)}%',
                 ),
                 PieChartSectionData(
                   radius: 25,
                   value: normalPercentage,
-                  color: Color(0xffFFB5AB),
+                  color: const Color(0xffFFB5AB),
                   title: '${normalPercentage.toStringAsFixed(1)}%',
                 ),
               ],

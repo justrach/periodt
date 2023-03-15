@@ -152,60 +152,13 @@ class HomePage extends ConsumerWidget {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: Text(
                               textAlign: TextAlign.center,
                               'You are most fertile during the 5-6 day period leading up to and including ovulation.',
                               style: GoogleFonts.poppins(
-                                  fontSize: 12, color: Color(0xffe59595)),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  )),
-              NewCard(
-                  height: 0.139810426540284,
-                  width: 0.856410256410256,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.book,
-                            size: 20,
-                            color: Color(0xffe59595),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Goddess Gossip",
-                            style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xffE59595),
-                                fontSize: 20),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              'You are most fertile during the 5-6 day period leading up to and including ovulation.',
-                              style: GoogleFonts.poppins(
-                                  fontSize: 12, color: Color(0xffe59595)),
+                                  fontSize: 12, color: const Color(0xffe59595)),
                             ),
                           ),
                         ],
@@ -232,10 +185,10 @@ class HomePage extends ConsumerWidget {
                             width: 10,
                           ),
                           Text(
-                            "Goddess Gossip",
+                            'Goddess Gossip',
                             style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xffE59595),
+                                color: const Color(0xffE59595),
                                 fontSize: 20),
                           ),
                         ],
@@ -245,14 +198,59 @@ class HomePage extends ConsumerWidget {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: Text(
                               textAlign: TextAlign.center,
-                              "You are most fertile during the 5-6 day period leading up to and including ovulation.",
+                              'You are most fertile during the 5-6 day period leading up to and including ovulation.',
                               style: GoogleFonts.poppins(
-                                  fontSize: 12, color: Color(0xffe59595)),
+                                  fontSize: 12, color: const Color(0xffe59595)),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )),
+              NewCard(
+                  height: 0.139810426540284,
+                  width: 0.856410256410256,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.book,
+                            size: 20,
+                            color: Color(0xffe59595),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Goddess Gossip',
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xffE59595),
+                                fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              'You are most fertile during the 5-6 day period leading up to and including ovulation.',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 12, color: const Color(0xffe59595)),
                             ),
                           ),
                         ],
