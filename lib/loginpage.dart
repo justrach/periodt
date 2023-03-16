@@ -118,7 +118,15 @@ class LoginPage extends ConsumerWidget {
                   Navigator.pushNamed(context, '/signup');
                 },
                 child: const Text('Sign Up'),
-              )
+
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/newSign');
+                },
+                child: const Text('Sign Up'),
+
+              ),
             ],
           ),
         ),

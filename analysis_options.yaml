@@ -6,6 +6,7 @@ analyzer:
     - 'lib/stateHolders/matrixSelectionHolder.dart'
     - 'lib/token/tokenmodel.dart'
     - 'lib/components/widgets/list_view_new.dart'
+    - 'lib/components/Input/*'
   errors:
     invalid_assignment: error
 linter:

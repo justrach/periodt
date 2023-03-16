@@ -14,6 +14,7 @@ import 'components/widgets/list_view_new.dart';
 import 'ui/homepage/home_page.dart';
 import 'loginpage.dart';
 import 'newpage.dart';
+import 'ui/test/testpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,6 +86,8 @@ class MyApp extends ConsumerWidget {
                 builder: (_) => AnimatedContainerExample());
           case '/example':
             return MaterialPageRoute(builder: (_) => const ExampleScreen());
+          case '/newSign':
+            return MaterialPageRoute(builder: (_) => TestPage());
           default:
             return null;
         }
