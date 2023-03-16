@@ -25,6 +25,8 @@ void main() async {
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   await Hive.openBox<String>('tokenBox');
+  await Hive.openBox('jwt_tokens');
+
 
   runApp(ProviderScope(
       child: MyApp(

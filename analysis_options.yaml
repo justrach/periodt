@@ -7,6 +7,8 @@ analyzer:
     - 'lib/token/tokenmodel.dart'
     - 'lib/components/widgets/list_view_new.dart'
     - 'lib/components/Input/*'
+    - 'lib/ui/test/*'
+    - 'lib/provider/auth/word_generator.dart'
   errors:
     invalid_assignment: error
 linter:

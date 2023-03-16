@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'provider/auth/uuid_provider.dart';
 import 'dart:convert';
 
 import 'token/tokenmodel.dart';
@@ -113,6 +114,14 @@ class LoginPage extends ConsumerWidget {
                 child:const  Text('Log in'),
               ),
               const SizedBox(height: 16.0),
+              Consumer(
+                builder: (context, ref, child) {
+                 return(
+                 Text('UUID: ${ref.watch(uuidStateProvider)}')
+
+                 );
+                },
+              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/signup');
