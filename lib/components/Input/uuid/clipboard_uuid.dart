@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../../provider/auth/combinedProvider.dart';
 import '../../../provider/auth/uuid_provider.dart';
+import '../../../provider/auth/word_list_provider.dart';
 import 'uuid_digit_spinner.dart';
 
 class UuidTextInput extends StatefulWidget {
@@ -24,8 +26,12 @@ class _UuidTextInputState extends State<UuidTextInput> {
 
   @override
   Widget build(BuildContext context) {
+    String concatenateList(List<String> list, String str) {
+      return list.map((e) => e.toString()).join('') + str;
+    }
+
     return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      builder: (context, ref, child) {
         // save UUID to provider
         Future.microtask(() => ref.read(uuidStateProvider.state).state = uuid);
 
@@ -42,7 +48,7 @@ class _UuidTextInputState extends State<UuidTextInput> {
                         controller: _controller,
                         readOnly: true,
                         decoration: const InputDecoration(
-                          labelText: 'This is your account name!',
+                          labelText: 'This is your secret key! Do not share it with anyone!',
                           border: OutlineInputBorder(),
                         ),
                         style: const TextStyle(fontSize: 16.0, color: Colors.transparent),
@@ -78,6 +84,18 @@ class _UuidTextInputState extends State<UuidTextInput> {
                 ),
               ],
             ),
+          // Consumer(
+          //   builder: (context, ref, child) {
+          //     return Text('UUID: ${ref.watch(selectedWordsProvider)}');
+          //   },),
+          // Consumer(
+          //   builder: (context, ref, child) {
+          //     var item = ref.watch(combinedProvider);
+          //
+          //     // var item = concatenateList(ref.watch(selectedWordsProvider.notifier), ref.watch(uuidStateProvider));
+          //     // return Text('UUID: ${ref.watch(selectedWordsProvider)} ${ref.watch(uuidStateProvider)}');
+          //     return Text('UUID: $item');
+          //   },),
         ],
       );
       },

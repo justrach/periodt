@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'provider/auth/uuid_provider.dart';
 import 'dart:convert';
 
+
 import 'token/tokenmodel.dart';
 
 final loginProvider =
@@ -136,6 +137,7 @@ class LoginPage extends ConsumerWidget {
                 child: const Text('Sign Up'),
 
               ),
+
             ],
           ),
         ),

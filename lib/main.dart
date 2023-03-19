@@ -9,6 +9,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:json_theme/json_theme.dart';
+import 'routes/route_transitions.dart';
 import 'signup_page.dart';
 import 'components/widgets/list_view_new.dart';
 import 'ui/homepage/home_page.dart';
@@ -78,22 +79,29 @@ class MyApp extends ConsumerWidget {
           pageTransitionType: PageTransitionType.topToBottom,
           backgroundColor: const Color(0xffFFDAD8)),
       onGenerateRoute: (settings) {
+        WidgetBuilder builder;
         switch (settings.name) {
           case '/home':
-            return MaterialPageRoute(builder: (_) => HomePage());
+            builder = (context) => HomePage();
+            break;
           case '/signup':
-            return MaterialPageRoute(builder: (_) => SignUpPage());
+            builder = (context) => SignUpPage();
+            break;
           case '/animated':
-            return MaterialPageRoute(
-                builder: (_) => AnimatedContainerExample());
+            builder = (context) => AnimatedContainerExample();
+            break;
           case '/example':
-            return MaterialPageRoute(builder: (_) => const ExampleScreen());
+            builder = (context) => const ExampleScreen();
+            break;
           case '/newSign':
-            return MaterialPageRoute(builder: (_) => TestPage());
+            builder = (context) => TestPage();
+            break;
           default:
             return null;
         }
+        return radialRevealTransitionBuilder(settings, builder); // Use the custom transition function here
       },
+
     );
   }
 }
