@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:periodt/provider/auth/word_list_provider.dart';
+import 'word_list_provider.dart';
 
 class RandomWordsSelection extends StatefulWidget {
   @override

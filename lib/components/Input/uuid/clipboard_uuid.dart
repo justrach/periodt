@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import '../../../provider/auth/combinedProvider.dart';
+import '../../../provider/auth/combined_provider.dart';
 import '../../../provider/auth/uuid_provider.dart';
 import '../../../provider/auth/word_list_provider.dart';
 import 'uuid_digit_spinner.dart';

@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../components/chart/chart.dart';
-import '../../loginpage.dart';
+import '../../components/datepicker/date_picker_2.dart';
+import '../../components/datepicker/period_date_picker.dart';
+import '../auth/login_page.dart';
 
 final loginProvider =
     ChangeNotifierProvider<LoginProvider>((ref) => LoginProvider());
@@ -40,8 +42,8 @@ class HomePage extends ConsumerWidget {
               Icons.favorite,
               color: Color(0xffFFA7A7),
             ),
-            onPressed: () {
-              ref.read(loginProvider).logout();
+            onPressed: () async {
+             await ref.read(loginProvider).logout();
               Navigator.pushReplacementNamed(context, '/');
             },
           ),
@@ -51,6 +53,11 @@ class HomePage extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              DatePickerExample(),
+              Center(child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: HorizontalDatePicker(),
+              )),
               SearchBar(),
               NewCard(
                 height: 0.342417061611374,

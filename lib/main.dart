@@ -10,13 +10,36 @@ import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:json_theme/json_theme.dart';
 import 'routes/route_transitions.dart';
-import 'signup_page.dart';
 import 'components/widgets/list_view_new.dart';
 import 'ui/homepage/home_page.dart';
-import 'loginpage.dart';
+import 'ui/auth/login_page.dart';
 import 'newpage.dart';
-import 'ui/test/testpage.dart';
+import 'ui/auth/sign_up_page.dart';
+class TokenProvider extends StateNotifier<AsyncValue<String?>> {
+  TokenProvider() : super(const AsyncValue.loading()) {
+    _loadToken();
+  }
 
+  Box<String> tokenBox = Hive.box<String>('tokenBox');
+  String? token;
+
+  Future<void> _loadToken() async {
+    token = tokenBox.get('token');
+    if (token != null) {
+      state = AsyncValue.data(token);
+    } else {
+      state = const AsyncValue.error('Token not found');
+    }
+  }
+
+   Future<void> logout() async {
+    // token = null;
+    await tokenBox.delete('token');
+
+  }
+
+  // ... rest of the class
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
@@ -28,22 +51,25 @@ void main() async {
   await Hive.openBox<String>('tokenBox');
   await Hive.openBox('jwt_tokens');
 
-
   runApp(ProviderScope(
-      child: MyApp(
-    theme: theme,
-  )));
+    // overrides: [
+    //   tokenProvider.overrideWithValue(AsyncValue.data(Hive.box<String>('tokenBox').get('token')))
+    // ],
+    child: MyApp(theme: theme),
+  ));
 }
 
-final tokenProvider = FutureProvider<String?>((ref) async {
-  final tokenBox = await Hive.openBox<String>('tokenBox');
-  print(tokenBox.get('token'));
-  return tokenBox.get('token');
-});
+// final tokenProvider = FutureProvider<String?>((ref) async {
+//   final tokenBox = await Hive.openBox<String>('tokenBox');
+//   print(tokenBox.get('token'));
+//   return tokenBox.get('token');
+// });
 
 class MyApp extends ConsumerWidget {
-  const MyApp({Key? key, required this.theme}) : super(key: key);
+   MyApp({Key? key, required this.theme}) : super(key: key);
   final ThemeData theme;
+  final tokenProvider = StateNotifierProvider<TokenProvider, AsyncValue<String?>>((ref) => TokenProvider());
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
@@ -68,13 +94,13 @@ class MyApp extends ConsumerWidget {
             ],
           ),
           nextScreen: ref.watch(tokenProvider).when(
-                data: (token) {
-                  print(token);
-                  return token != null ? HomePage() : LoginPage();
-                },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (_, __) => LoginPage(),
-              ),
+          data: (token) {
+            print(token);
+            return token != null ? HomePage() : LoginPage();
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, __) => LoginPage(),
+        ),
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.topToBottom,
           backgroundColor: const Color(0xffFFDAD8)),
@@ -94,7 +120,13 @@ class MyApp extends ConsumerWidget {
             builder = (context) => const ExampleScreen();
             break;
           case '/newSign':
-            builder = (context) => TestPage();
+            builder = (context) => SignUpPage();
+            break;
+          case '/selectWords':
+            builder = (context) => SelectWords();
+            break;
+          case '/finishLogin':
+            builder = (context) => FinishSignUp();
             break;
           default:
             return null;

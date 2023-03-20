@@ -1,9 +1,9 @@
-import 'package:periodt/provider/auth/uuid_provider.dart';
+import 'uuid_provider.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'word_list_provider.dart';
 String concatenateList(List<String> list, String str) {
-  return list.map((e) => e.toString()).join('') + str;
+  return list.map((e) => e.toString()).join() + str;
 }
 
 
