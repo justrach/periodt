@@ -191,7 +191,7 @@ class LoginPage extends ConsumerWidget {
                   const SizedBox(height: 50,),
                   Column(
                     children: [
-                      const Padding(
+                      const Paddinga
                     padding: EdgeInsets.only(left: 16.0),
                     child: Text('No Account?', textAlign: TextAlign.left, style: TextStyle(
                       fontSize: 24,
