@@ -66,6 +66,7 @@ void main() async {
   }
   await Hive.openBox<String>('tokenBox');
   await Hive.openBox('jwt_tokens');
+  await Hive.openBox('onboarding_status');
   final loginProvider = LoginProvider();
   final credentials = await loginProvider.readCredentials();
   bool isLoggedIn = false;
