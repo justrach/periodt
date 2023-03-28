@@ -11,6 +11,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:json_theme/json_theme.dart';
 // import 'package:periodt/ui/homepage/onboarding/onboarding.dart';
+import 'provider/auth/onboarder_provider.dart';
 import 'routes/route_transitions.dart';
 import 'components/widgets/list_view_new.dart';
 import 'ui/homepage/home_page.dart';
@@ -18,6 +19,7 @@ import 'ui/auth/login_page.dart';
 import 'newpage.dart';
 import 'ui/auth/sign_up_page.dart';
 import 'ui/homepage/newLogInPage.dart';
+import 'ui/homepage/onboarding/onboarding.dart';
 
 class TokenProvider extends StateNotifier<AsyncValue<String?>> {
   TokenProvider() : super(const AsyncValue.loading()) {
@@ -102,6 +104,14 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.watch(tokenProvider).when(
+      data: (token) => token,
+      loading: () => null,
+      error: (_, __) => null,
+    );
+    final hasCompletedOnboarding =
+    userId != null ? ref.watch(onboardingStatusProvider(userId)) : false;
+
     return AppLifecycleHandler(
       ref: ref,
       tokenProvider: tokenProvider,
@@ -131,7 +141,10 @@ class MyApp extends ConsumerWidget {
             //         print(token);
             //         return token != null ?  HomePage() : LoginPage();
             //       },
-          nextScreen: isLoggedIn ? HomePage() : LoginPage(),
+            nextScreen: isLoggedIn
+                ? (hasCompletedOnboarding ? HomePage() : const OnBoardingApp())
+                : LoginPage(),
+          // nextScreen: isLoggedIn ? HomePage() : LoginPage(),
                 //   loading: () => const Center(child: CircularProgressIndicator()),
                 //   error: (_, __) => LoginPage(),
                 // ),
@@ -149,6 +162,9 @@ class MyApp extends ConsumerWidget {
               break;
             case '/signup':
               builder = (context) => SignUpPage();
+              break;
+            case '/onboarding':
+              builder = (context) => const OnBoardingApp();
               break;
             case '/newLogin':
               builder = (context) => FirstLoginPage();
@@ -188,7 +204,7 @@ class AppLifecycleHandler extends StatefulWidget {
   AppLifecycleHandler({required this.child, required this.ref, required this.tokenProvider, Key? key}) : super(key: key);
 
   @override
-  _AppLifecycleHandlerState createState() => _AppLifecycleHandlerState();
+  State<AppLifecycleHandler> createState() => _AppLifecycleHandlerState();
 }
 
 class _AppLifecycleHandlerState extends State<AppLifecycleHandler> with WidgetsBindingObserver {

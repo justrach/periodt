@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:periodt/provider/auth/token_provider.dart';
 
 import '../../ui/auth/login_page.dart';
+import 'onboarder_provider.dart';
 
 class TextInputWithCounter extends StatefulWidget {
   @override
@@ -22,6 +24,10 @@ class _TextInputWithCounterState extends State<TextInputWithCounter> {
 
   @override
   Widget build(BuildContext context) {
+    final tokenProvider =
+    StateNotifierProvider<TokenProvider, AsyncValue<String?>>(
+            (ref) => TokenProvider());
+
     return Row(
       children: [
         Expanded(
@@ -55,7 +61,19 @@ class _TextInputWithCounterState extends State<TextInputWithCounter> {
             final success =
                 await ref.read(loginProvider).login(email, password);
     if (success) {
-    Navigator.pushReplacementNamed(context, '/home');
+      final userId = ref.watch(tokenProvider).when(
+        data: (token) => token,
+        loading: () => null,
+        error: (_, __) => null,
+      );
+      final hasCompletedOnboarding =
+      userId != null ? ref.watch(onboardingStatusProvider(userId)) : false;
+      if(hasCompletedOnboarding) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        Navigator.pushReplacementNamed(context, '/onboarding');
+      }
+      // Navigator.pushReplacementNamed(context, '/home');
     }else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Invalid email or password'),

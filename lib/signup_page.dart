@@ -2,30 +2,49 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import 'token/tokenmodel.dart';
 
 final signUpProvider =
     ChangeNotifierProvider<SignUpProvider>((ref) => SignUpProvider());
 
 class SignUpProvider extends ChangeNotifier {
+  final storage = const FlutterSecureStorage();
+  Box<String> tokenBox = Hive.box<String>('tokenBox');
+  Box<dynamic> hasOnboarded = Hive.box<dynamic>('onboarding_status');
   String? token;
+  Future<void> saveCredentials(String username, String password) async {
+    await storage.write(key: 'username', value: username);
+    await storage.write(key: 'password', value: password);
+  }
 
   Future<bool> signUp(
-      String email, String password, String firstName, String lastName) async {
+      String email, String password) async {
     final response = await http.post(
       Uri.parse('https://periodttt.app/signup'),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
         'username': email,
         'password': password,
-        'firstName': firstName,
-        'lastName': lastName,
+
       }),
     );
 
     if (response.statusCode == 200) {
       token = response.body;
+      String jsonString = response.body;
+      Map<String, dynamic> jsonMap = json.decode(jsonString);
+      TokenModel tokenModel = TokenModel.fromJson(jsonMap);
+      print('the value of token is ${tokenModel.token!}');
+      token = tokenModel.token;
+      await saveCredentials(email, password);
+      tokenBox.put('token', tokenModel.token!);
+      await storage.write(key: 'token', value: tokenModel.token);
+      bool? hasOnBoarded = tokenModel.hasOnboarded;
+      hasOnboarded.put('hasOnboarded', hasOnBoarded!);
       notifyListeners();
       return true;
     } else {
@@ -109,11 +128,10 @@ class SignUpPage extends ConsumerWidget {
                   if (formKey.currentState!.validate()) {
                     final email = emailController.text;
                     final password = passwordController.text;
-                    final firstName = firstNameController.text;
-                    final lastName = lastNameController.text;
+
                     final success = await ref
                         .read(signUpProvider)
-                        .signUp(email, password, firstName, lastName);
+                        .signUp(email, password);
                     if (success) {
                       Navigator.pushReplacementNamed(context, '/home');
                     } else {

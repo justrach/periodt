@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
+import '../home_page.dart';
+
 
 
 // class OnBoardingApp extends StatelessWidget {
@@ -35,7 +37,7 @@ class OnBoardingAppState extends State<OnBoardingApp> {
 
   void _onIntroEnd(context) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const HomePage()),
+      MaterialPageRoute(builder: (_) =>  HomePage()),
     );
   }
 
@@ -223,14 +225,14 @@ class OnBoardingAppState extends State<OnBoardingApp> {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
-      body: const Center(child: Text('This is the screen after Introduction')),
-    );
-  }
-}
+// class HomePage extends StatelessWidget {
+//   const HomePage({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Home')),
+//       body: const Center(child: Text('This is the screen after Introduction')),
+//     );
+//   }
+// }

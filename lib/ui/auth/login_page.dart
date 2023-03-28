@@ -16,6 +16,7 @@ final loginProvider =
 
 class LoginProvider extends ChangeNotifier {
   Box<String> tokenBox = Hive.box<String>('tokenBox');
+  Box<dynamic> hasOnboarded = Hive.box<dynamic>('onboarding_status');
   final storage = const FlutterSecureStorage();
   String? token;
 
@@ -39,6 +40,10 @@ class LoginProvider extends ChangeNotifier {
       await saveCredentials(email, password);
       tokenBox.put('token', tokenModel.token!);
       await storage.write(key: 'token', value: tokenModel.token);
+      bool? hasOnBoarded = tokenModel.hasOnboarded;
+      print(hasOnBoarded);
+      hasOnboarded.put('hasOnboarded', hasOnBoarded);
+
       notifyListeners();
       return true;
     } else {
@@ -64,6 +69,7 @@ class LoginProvider extends ChangeNotifier {
     // token = null;
     await storage.delete(key: 'token');
     await tokenBox.delete('token');
+    await hasOnboarded.delete('hasOnboarded');
 
     notifyListeners();
   }

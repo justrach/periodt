@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import '../../components/Input/uuid/clipboard_uuid.dart';
 import '../../components/buttons/button_shape.dart';
 import '../../provider/auth/combined_provider.dart';
+import '../../provider/auth/onboarder_provider.dart';
+import '../../provider/auth/token_provider.dart';
 import '../../provider/auth/word_generator.dart';
 import '../../token/tokenmodel.dart';
 
@@ -222,6 +224,9 @@ class SelectWords extends ConsumerWidget {
 
 
 class FinishSignUp extends ConsumerWidget {
+  final tokenProvider =
+  StateNotifierProvider<TokenProvider, AsyncValue<String?>>(
+          (ref) => TokenProvider());
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -296,7 +301,19 @@ class FinishSignUp extends ConsumerWidget {
                     .read(signUpProvider)
                     .signUp(password, password);
                 if (success) {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  final userId = ref.watch(tokenProvider).when(
+                    data: (token) => token,
+                    loading: () => null,
+                    error: (_, __) => null,
+                  );
+                  final hasCompletedOnboarding =
+                  userId != null ? ref.watch(onboardingStatusProvider(userId)) : false;
+                  if(hasCompletedOnboarding) {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  } else {
+                    Navigator.pushReplacementNamed(context, '/onboarding');
+                  }
+                  // Navigator.pushReplacementNamed(context, '/home');
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content:
@@ -324,6 +341,7 @@ ChangeNotifierProvider<SignUpProvider>((ref) => SignUpProvider());
 
 class SignUpProvider extends ChangeNotifier {
   final storage = const FlutterSecureStorage();
+  Box<dynamic> hasOnboarded = Hive.box<dynamic>('onboarding_status');
   String? token;
   Future<void> saveCredentials(String username, String password) async {
     await storage.write(key: 'username', value: username);
@@ -363,6 +381,9 @@ class SignUpProvider extends ChangeNotifier {
       Map<String, dynamic> jsonMap = json.decode(jsonString);
       TokenModel tokenModel = TokenModel.fromJson(jsonMap);
       await storage.write(key: 'token', value: tokenModel.token);
+      bool? hasOnBoarded = tokenModel.hasOnboarded;
+      print(hasOnBoarded);
+      hasOnboarded.put('hasOnboarded', hasOnBoarded);
       notifyListeners();
       return true;
     } else {
