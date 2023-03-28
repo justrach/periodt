@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import '../../components/Input/uuid/clipboard_uuid.dart';
 import '../../components/buttons/button_shape.dart';
 import '../../provider/auth/combined_provider.dart';
 import '../../provider/auth/word_generator.dart';
+import '../../token/tokenmodel.dart';
 
 class SignUpPage extends ConsumerWidget {
 
@@ -316,16 +318,34 @@ class FinishSignUp extends ConsumerWidget {
   }
 }
 
+
 final signUpProvider =
 ChangeNotifierProvider<SignUpProvider>((ref) => SignUpProvider());
 
 class SignUpProvider extends ChangeNotifier {
+  final storage = const FlutterSecureStorage();
   String? token;
+  Future<void> saveCredentials(String username, String password) async {
+    await storage.write(key: 'username', value: username);
+    await storage.write(key: 'password', value: password);
+  }
+
+  Future<Map<String, String>?> readCredentials() async {
+    final username = await storage.read(key: 'username');
+    final password = await storage.read(key: 'password');
+
+    if (username != null && password != null) {
+      return {'username': username, 'password': password};
+    }
+    return null;
+  }
+
+
 
   Future<bool> signUp(
       String email, String password) async {
     final response = await http.post(
-      Uri.parse('http://localhost:3000/signup'),
+      Uri.parse('https://periodttt.app/signup'),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
         'username': email,
@@ -338,6 +358,11 @@ class SignUpProvider extends ChangeNotifier {
 
     if (response.statusCode == 201) {
       token = response.body;
+      await saveCredentials(email, password);
+      String jsonString = response.body;
+      Map<String, dynamic> jsonMap = json.decode(jsonString);
+      TokenModel tokenModel = TokenModel.fromJson(jsonMap);
+      await storage.write(key: 'token', value: tokenModel.token);
       notifyListeners();
       return true;
     } else {

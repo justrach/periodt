@@ -14,10 +14,10 @@ class SignUpProvider extends ChangeNotifier {
   Future<bool> signUp(
       String email, String password, String firstName, String lastName) async {
     final response = await http.post(
-      Uri.parse('http://10.0.0.52:3000/signup'),
+      Uri.parse('https://periodttt.app/signup'),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
-        'email': email,
+        'username': email,
         'password': password,
         'firstName': firstName,
         'lastName': lastName,

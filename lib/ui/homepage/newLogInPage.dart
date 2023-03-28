@@ -8,9 +8,9 @@ import '../../components/datepicker/period_date_picker.dart';
 import '../auth/login_page.dart';
 
 final loginProvider =
-    ChangeNotifierProvider<LoginProvider>((ref) => LoginProvider());
+ChangeNotifierProvider<LoginProvider>((ref) => LoginProvider());
 
-class HomePage extends ConsumerWidget {
+class FirstLoginPage extends ConsumerWidget {
   final DateTime periodStartDate2 = DateTime(2023, 2, 24);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +30,7 @@ class HomePage extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         title: Text(
             style:
-                GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 11),
+            GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 11),
             'periodt'),
         leading: IconButton(
           icon: const Icon(Icons.local_florist, color: Color(0xffFFA7A7)),
@@ -43,7 +43,7 @@ class HomePage extends ConsumerWidget {
               color: Color(0xffFFA7A7),
             ),
             onPressed: () async {
-             await ref.read(loginProvider).logoutTotal();
+              await ref.read(loginProvider).logout();
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

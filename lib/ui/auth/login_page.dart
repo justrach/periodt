@@ -1,8 +1,10 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import '../../provider/auth/biometric_auth.dart';
 import '../../provider/auth/login_auth_provider.dart';
 import 'dart:convert';
 
@@ -14,10 +16,12 @@ final loginProvider =
 
 class LoginProvider extends ChangeNotifier {
   Box<String> tokenBox = Hive.box<String>('tokenBox');
+  final storage = const FlutterSecureStorage();
   String? token;
 
   Future<bool> login(String email, String password) async {
-    final url = Uri.parse('http://localhost:3000/login');
+    print(email);
+    final url = Uri.parse('https://periodttt.app/login');
     final headers = <String, String>{
       'Content-Type': 'application/json',
     };
@@ -32,21 +36,50 @@ class LoginProvider extends ChangeNotifier {
       TokenModel tokenModel = TokenModel.fromJson(jsonMap);
       print('the value of token is ${tokenModel.token!}');
       token = tokenModel.token;
+      await saveCredentials(email, password);
       tokenBox.put('token', tokenModel.token!);
+      await storage.write(key: 'token', value: tokenModel.token);
       notifyListeners();
       return true;
     } else {
       return false;
     }
   }
+  Future<void> saveCredentials(String username, String password) async {
+    await storage.write(key: 'username', value: username);
+    await storage.write(key: 'password', value: password);
+  }
+
+  Future<Map<String, String>?> readCredentials() async {
+    final username = await storage.read(key: 'username');
+    final password = await storage.read(key: 'password');
+
+    if (username != null && password != null) {
+      return {'username': username, 'password': password};
+    }
+    return null;
+  }
 
   Future<void> logout() async {
     // token = null;
+    await storage.delete(key: 'token');
     await tokenBox.delete('token');
+
+    notifyListeners();
+  }
+  Future<void> logoutTotal() async {
+    // token = null;
+    await storage.delete(key: 'token');
+    await storage.delete(key: 'username');
+    await storage.delete(key: 'password');
+    await tokenBox.delete('token');
+
+
     notifyListeners();
   }
 
-  String? loginToken() {
+  Future<String?> loginToken() async {
+    token = await storage.read(key: 'token');
     token = tokenBox.get('token');
     // notifyListeners();
     return token;
@@ -54,8 +87,34 @@ class LoginProvider extends ChangeNotifier {
 }
 
 class LoginPage extends ConsumerWidget {
+  // final _biometricAuth = BiometricAuth();
+  //
+  // Future<void> _authenticate(BuildContext context, WidgetRef ref) async {
+  //   bool isBiometricAvailable = await _biometricAuth.isBiometricAvailable();
+  //   if (isBiometricAvailable) {
+  //     bool isAuthenticated = await _biometricAuth.authenticateWithBiometrics();
+  //     if (isAuthenticated) {
+  //       String? token = await ref.read(loginProvider).loginToken();
+  //       if (token != null) {
+  //         // Recreate the JWT token with local authentication
+  //         // ...
+  //
+  //         Navigator.pushReplacementNamed(context, '/home');
+  //       } else {
+  //         // Show login screen if token is not available
+  //       }
+  //     } else {
+  //       // Show an error message if authentication failed
+  //     }
+  //   } else {
+  //    await ref.read(loginProvider).logout();
+  //     Navigator.pushReplacementNamed(context, '/login');
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) => _authenticate(context, ref));
     final formKey = GlobalKey<FormState>();
 
 
@@ -144,12 +203,12 @@ class LoginPage extends ConsumerWidget {
                     padding: const EdgeInsets.only( left: 16.0, top: 8),
                     child: Column(
                       children: [
-            
+
                         TextInputWithCounter(),
                       ],
                     ),
                   ),
-            
+
                   // Text(ref.read(loginProvider).loginToken() ?? 'Not logged in'),
                   // const SizedBox(height: 16.0),
                   // ElevatedButton(
@@ -191,14 +250,14 @@ class LoginPage extends ConsumerWidget {
                   const SizedBox(height: 50,),
                   Column(
                     children: [
-                      const Paddinga
+                      const Padding(
                     padding: EdgeInsets.only(left: 16.0),
                     child: Text('No Account?', textAlign: TextAlign.left, style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),),
                   ),
-               
+
                       Padding(
                         padding: const EdgeInsets.only(bottom:8.0, top: 4),
                         child: Align(
@@ -213,7 +272,7 @@ class LoginPage extends ConsumerWidget {
                       ),
                     ],
                   ),
-            
+
                 ],
               ),
             ),

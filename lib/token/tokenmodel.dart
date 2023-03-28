@@ -1,5 +1,3 @@
-// ignore_for_file: *
-
 import 'dart:convert';
 import 'dart:developer';
 
@@ -22,13 +20,16 @@ T? asT<T>(dynamic value) {
 class TokenModel {
   TokenModel({
     this.token,
+    this.hasOnboarded,
   });
 
   factory TokenModel.fromJson(Map<String, dynamic> json) => TokenModel(
-        token: asT<String?>(json['token']),
-      );
+    token: asT<String?>(json['token']),
+    hasOnboarded: asT<bool?>(json['hasOnboarded']),
+  );
 
   String? token;
+  bool? hasOnboarded;
 
   @override
   String toString() {
@@ -36,12 +37,14 @@ class TokenModel {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'token': token,
-      };
+    'token': token,
+    'hasOnboarded': hasOnboarded,
+  };
 
   TokenModel copy() {
     return TokenModel(
       token: token,
+      hasOnboarded: hasOnboarded,
     );
   }
 }
