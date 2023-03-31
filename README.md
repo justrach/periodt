@@ -25,9 +25,13 @@ flutter pub get
 3. Run the app:
 
 For Android:
-`flutter run -d android`
+```bash
+flutter run -d android
+```
 For iOS:
-`flutter run -d ios`
+```bash
+flutter run -d ios
+```
 
 4. Note: Ensure you have the respective binaries included (Android SDK > API 25 and Xcode 14.2 >) before running the app.
 
